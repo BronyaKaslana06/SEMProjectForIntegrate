@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 import {
   ElMessage,
   ElMessageBox,
@@ -9,10 +9,14 @@ import {
   UploadUserFile,
   ElLoading
 } from 'element-plus'
-import {useRouter} from "vue-router";
-import {Plus} from '@element-plus/icons-vue'
-import type {UploadInstance, UploadProps, UploadRawFile} from 'element-plus'
+import { useRouter } from "vue-router";
+import { Plus } from '@element-plus/icons-vue'
+import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import axiosInstance from "~/Axios/request";
+
+const backToMain = () => {
+  window.location.href = "http://111.231.168.12";
+};
 
 const upload = ref<UploadInstance>()
 const fileList = ref<UploadUserFile[]>([])
@@ -102,25 +106,17 @@ const fileUpload = (options: UploadRequestOptions) => {
 </script>
 
 <template>
+  <div style="position: fixed; right: 10px; top: 15px; z-index: 1000;">
+    <el-button type="primary" @click="backToMain" style="position: absolute; right: 0; top: 0;">返回主页</el-button>
+  </div>
   <div id="contentContainer" class="flex-content-around h-full">
     <div id="upLoaderContainer" class="flex-col" style="margin: auto; padding: 0 500px">
-      <el-upload
-          ref="upload"
-          class="avatar-uploader"
-          drag
-          accept="text/plain"
-          action="/data/"
-          v-model:file-list="fileList"
-          :show-file-list="true"
-          :on-exceed="exceedHandler"
-          :auto-upload="false"
-          :before-upload="beforeDataUpload"
-          :http-request="fileUpload"
-          :limit="1"
-      >
+      <el-upload ref="upload" class="avatar-uploader" drag accept="text/plain" action="/data/"
+        v-model:file-list="fileList" :show-file-list="true" :on-exceed="exceedHandler" :auto-upload="false"
+        :before-upload="beforeDataUpload" :http-request="fileUpload" :limit="1">
         <template #trigger>
           <el-icon class="avatar-uploader-icon">
-            <Plus/>
+            <Plus />
           </el-icon>
         </template>
         <template #tip>
@@ -131,13 +127,14 @@ const fileUpload = (options: UploadRequestOptions) => {
       </el-upload>
       <div id="tip" class="bg-blend-color-dodge" style="margin: 20px 0px">
         <el-card style="width: 100%" shadow="hover">
-          <el-text class="mx-1" size="large">txt文件注意事项：<br/><br/></el-text>
-          1. 首行必须为各个属性的属性名，可以复制粘贴下面的内容<br/>
+          <el-text class="mx-1" size="large">txt文件注意事项：<br /><br /></el-text>
+          1. 首行必须为各个属性的属性名，可以复制粘贴下面的内容<br />
           <el-card style="margin: 5px; background: rgba(207,212,213,0.63)" shadow="always">
-            elasticityModulus structuralAdhesiveStress panelDamageArea structuralAdhesiveDamageLength connectorsNumber backBoltsNumber panelVerticality stitchingWidth panelSize Offset_x Offset_y Offset_z flatness stains cracks
+            elasticityModulus structuralAdhesiveStress panelDamageArea structuralAdhesiveDamageLength connectorsNumber
+            backBoltsNumber panelVerticality stitchingWidth panelSize Offset_x Offset_y Offset_z flatness stains cracks
           </el-card>
-          2. 第二行开始每一行为一块幕墙的数据<br/>
-          3. 每一行包括若干数字，对应上述的属性，数字之间用空格隔开<br/>
+          2. 第二行开始每一行为一块幕墙的数据<br />
+          3. 每一行包括若干数字，对应上述的属性，数字之间用空格隔开<br />
           4. 数字可以是正数、小数和负数
         </el-card>
       </div>
